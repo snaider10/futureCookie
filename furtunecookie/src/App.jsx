@@ -2,13 +2,14 @@ import { useEffect, useState } from 'react'
 import './App.css'
 
 function App() {
+  //define state variables
   const [fortune, setFortune] = useState('')
   const [active, setActive] = useState(false)
-
   const handleClick = () => {
     setActive(true)
   }
 
+  //fetch data from API
   useEffect(() => {
     if (active) {
       try {
