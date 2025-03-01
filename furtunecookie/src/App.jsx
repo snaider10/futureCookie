@@ -25,11 +25,17 @@ function App() {
     }
   },[active])
   return (
-    <>
-      <h1>This is your fortune!</h1>
-      <h2>{fortune}</h2>
-      <button onClick={handleClick}>Get Fortune</button>
-    </>
+    <main>
+      <section>
+        <div>
+        </div>
+        <article>
+          <h1>This is your fortune!</h1>
+          <h2>{fortune}</h2>
+          <button onClick={handleClick}>Get Fortune</button>
+        </article>
+      </section>
+    </main>
   )
 }
 
