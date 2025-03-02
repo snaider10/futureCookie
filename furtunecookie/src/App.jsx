@@ -1,43 +1,69 @@
 import { useEffect, useState } from 'react'
 import './style.css'
+import { SiStagetimer } from "react-icons/si";
 
 function App() {
   //define state variables
-  const [fortune, setFortune] = useState('')
-  const [active, setActive] = useState(false)
+  const [consulting, setConsulting] = useState(false)
+  const [response, setResponse] = useState('')
   const handleClick = () => {
-    setActive(true)
+    setConsulting(true)
   }
 
+  const ResponseOk = () =>{
+
+    return(
+      <div className='flex flex-col justify-center gap-2 items-baseline'>
+        <h2 className='font-bold text-4xl'>{response}</h2>
+        <button onClick={handleClick} className='bg-red-400 p-2 rounded-lg text-amber-50 font-semibold text-2xl'>Obtener fortuna</button> 
+      </div>
+    )
+  } 
+
+  const WaitReponse = () => {
+    return(
+      <SiStagetimer/>
+    )
+  }
+
+  const Intro = () => {
+    return(
+      <div>
+        <h2 className='font-bold text-3xl'>Prueba tu fortuna!!!</h2>
+         <p className='mb-1'>Animate en descrubir que te prepara el destino el dia de hoy</p>
+          <button onClick={handleClick} className='bg-red-400 p-2 rounded-lg text-amber-50 font-semibold'>Obtener fortuna</button> 
+      </div>
+    )
+  }
+  
   //fetch data from API
   useEffect(() => {
-    if (active) {
-      try {
-        const getFortune = async () => {
+    if (consulting) {
+      const getFortune = async () => {
+        try {
           const response = await fetch('https://api.adviceslip.com/advice')
           const data = await response.json()
-          setFortune(data.slip.advice)
-          setActive(false)
+          setResponse(data.slip.advice)
+        } catch (error) {
+          console.log(error.message)
+        } finally {
+          setConsulting(false)
         }
-        getFortune()
-      } catch (error) {
-        console.log(error.message)
       }
+      getFortune()
     }
-  },[active])
+  },[consulting])
   return (
-    <main className='container h-screen flex justify-center items-center'>
-      <section className='container flex gap-4 p-6 rounded-2xl justify-center items-center shadow-2xl'>
+    <main className='h-screen w-full flex justify-center items-center'>
+      <section className='flex gap-8 p-6 rounded-2xl justify-center shadow-2xl w-2/4'>
         <div className='w-96 h-96 bg-yellow-200 rounded-full'>
           <img src='cookie.jpg' alt='cookie' className='rounded-full h-full w-full' />
         </div>
-        <article className='flex flex-col gap-2'>
-          <h1 className='font-bold text-2xl'>Prueba tu fortuna !!!</h1>
-          <h3>Animate a saber lo que te prepara el destino</h3>
-          <h2>{fortune}</h2>
-          <button onClick={handleClick}
-            className='bg-red-400 text-white font-bold py-2 px-4 rounded'
-          >Consultar</button>
+        <article className='flex flex-col justify-center basis-2xl h-96 p-2'>
+          {
+            //response? <ResponseOk /> : <Intro />
+            consulting? <WaitReponse /> : (response? <ResponseOk /> : <Intro />)
+          }
         </article>
       </section>
     </main>
